@@ -24,9 +24,9 @@ export const LoginScreen = () => {
       >
         <Input placeholder={"密码"} type="password" id={"password"} />
       </Form.Item>
-      <Form.Item>
+      <Form.Item style={{ display: "flex", justifyContent: "center" }}>
         <Button htmlType={"submit"} type="primary">
-          登
+          登录
         </Button>
       </Form.Item>
     </Form>
