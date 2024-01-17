@@ -51,13 +51,13 @@ export const useAsync = <D>(initialState?: State<D>) => {
   };
 
   return {
-    isIdle: state.stat === 'idle',
-    isLoading: state.stat === 'loading',
-    isError: state.stat === 'error',
-    isSuccess: state.stat === 'success',
+    isIdle: state.stat === "idle",
+    isLoading: state.stat === "loading",
+    isError: state.stat === "error",
+    isSuccess: state.stat === "success",
     run,
     setData,
     setError,
-    ...state
-  }
+    ...state,
+  };
 };
