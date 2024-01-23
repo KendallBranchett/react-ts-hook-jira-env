@@ -2,19 +2,19 @@ import React from "react";
 import { SearchPanel } from "./search-panel";
 import { List, Project } from "./list";
 import { useState } from "react";
+import { ButtonNoPadding } from "../../components/lib";
 import { useDebounce, useDocumentTitle } from "utils";
 import styled from "@emotion/styled";
 import { Button, Typography } from "antd";
 import { useProjects } from "utils/project";
 import { useUsers } from "utils/user";
 import { useUrlQueryParam } from "utils/url";
-import { useProjectSearchParams } from "./util";
+import { useProjectModal, useProjectSearchParams } from "./util";
 import { Row } from "components/lib";
 
 const apiUrl = process.env.REACT_APP_API_URL;
-export const ProjectListScreen = (props: {
-  setProjectModalOpen: (isOpen: boolean) => void;
-}) => {
+export const ProjectListScreen = () => {
+  const { open } = useProjectModal();
   const [param, setParam] = useProjectSearchParams();
   const debouncedParam = useDebounce(param, 1000);
   const { isLoading, error, data: list, retry } = useProjects(debouncedParam);
@@ -25,9 +25,9 @@ export const ProjectListScreen = (props: {
     <Container>
       <Row between={true}>
         <h1>项目列表</h1>
-        <Button onClick={() => props.setProjectModalOpen(true)}>
+        <ButtonNoPadding type={"link"} onClick={open}>
           创建项目
-        </Button>
+        </ButtonNoPadding>
       </Row>
       <SearchPanel users={users || []} param={param} setParam={setParam} />
       {error ? (
@@ -38,7 +38,6 @@ export const ProjectListScreen = (props: {
         loading={isLoading}
         users={users || []}
         dataSource={list || []}
-        setProjectModalOpen={props.setProjectModalOpen}
       />
     </Container>
   );
