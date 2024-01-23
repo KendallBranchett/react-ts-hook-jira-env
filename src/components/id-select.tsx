@@ -6,7 +6,7 @@ type SelectProps = React.ComponentProps<typeof Select>;
 
 interface IdSelectProps
   extends Omit<SelectProps, "value" | "onChange" | "options"> {
-  value: Raw | null | undefined;
+  value?: Raw | null | undefined;
   onChange?: (value?: number) => void;
   defaultOptionName?: string;
   options?: { name: string; id: number }[];

@@ -1,11 +1,13 @@
+/* eslint-disable react/jsx-no-undef */
 import React from "react";
 import { User } from "./search-panel";
-import { Dropdown, MenuProps, Table, TableProps } from "antd";
+import { Dropdown, Menu, MenuProps, Table, TableProps } from "antd";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 import { Pin } from "components/pin";
 import { useEditProject } from "utils/project";
 import { ButtonNoPadding } from "components/lib";
+import { useProjectModal } from "./util";
 
 export interface Project {
   id: number;
@@ -22,15 +24,11 @@ interface ListProps extends TableProps<Project> {
 }
 
 export const List = ({ users, ...props }: ListProps) => {
+  const { startEdit } = useProjectModal();
   const { mutate } = useEditProject();
-  const pinProject = (id: number) => (pin: boolean) =>
-    mutate({ id, pin }).then(props.refresh);
-  const items: MenuProps["items"] = [
-    {
-      key: "edit",
-      label: <ButtonNoPadding type={"link"}>编辑</ButtonNoPadding>,
-    },
-  ];
+  const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin });
+  const editProject = (id: number) => () => startEdit(id);
+
   return (
     <Table
       pagination={false}
@@ -83,7 +81,16 @@ export const List = ({ users, ...props }: ListProps) => {
         {
           render(value, project) {
             return (
-              <Dropdown menu={{ items }}>
+              <Dropdown
+                overlay={
+                  <Menu>
+                    <Menu.Item onClick={editProject(project.id)} key={"edit"}>
+                      编辑
+                    </Menu.Item>
+                    <Menu.Item key={"delete"}>删除</Menu.Item>
+                  </Menu>
+                }
+              >
                 <ButtonNoPadding type={"link"}>...</ButtonNoPadding>
               </Dropdown>
             );
