@@ -1,5 +1,5 @@
 import { Button, Drawer, Form, Input, Spin } from "antd";
-import React from "react";
+import React, { useEffect } from "react";
 import { useProjecstQueryKey, useProjectModal } from "./util";
 import { UserSelect } from "components/user-select";
 import { useAddProject, useEditProject } from "utils/project";
@@ -22,11 +22,19 @@ export const ProjectModal = () => {
       close();
     });
   };
+  const closeModal = () => {
+    form.resetFields();
+    close();
+  };
+
+  useEffect(() => {
+    form.setFieldsValue(editingProject);
+  }, [editingProject, form]);
 
   const title = editingProject ? "编辑项目" : "创建项目";
 
   return (
-    <Drawer onClose={close} visible={projectModalOpen} width={"100%"}>
+    <Drawer onClose={closeModal} visible={projectModalOpen} width={"100%"}>
       <Container>
         {isLoading ? (
           <Spin size={"large"} />
