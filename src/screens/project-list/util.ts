@@ -14,6 +14,11 @@ export const useProjectSearchParams = () => {
   ] as const;
 };
 
+export const useProjecstQueryKey = () => {
+  const [params] = useProjectSearchParams();
+  return ["projects", params];
+};
+
 //判断模态框是否是创建
 export const useProjectModal = () => {
   const [{ projectCreate }, setProjectCreate] = useUrlQueryParam([
