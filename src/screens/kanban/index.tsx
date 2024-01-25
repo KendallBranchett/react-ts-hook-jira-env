@@ -1,17 +1,24 @@
 import React from "react";
 import { useDocumentTitle } from "utils";
 import { useKanbans } from "utils/kanban";
-import { useKanbansSearchParams, useProjectInUrl } from "./util";
+import {
+  useKanbansSearchParams,
+  useProjectInUrl,
+  useTasksSearchParams,
+} from "./util";
 import { KanbanColumn } from "./kanban-column";
 import styled from "@emotion/styled";
 import { SearchPanel } from "./search-panel";
 import { ScreenContainer } from "components/lib";
+import { useTasks } from "utils/task";
+import { CreateKanban } from "./create-kanban";
 
 export const KanbanScreen = () => {
   useDocumentTitle("看板列表");
 
   const { data: currentProject } = useProjectInUrl();
   const { data: kanbans } = useKanbans(useKanbansSearchParams());
+  const { isLoading: taskIsLoading } = useTasks(useTasksSearchParams());
   console.log("currentProject", currentProject);
   console.log("kanbans", kanbans);
 
@@ -23,6 +30,7 @@ export const KanbanScreen = () => {
         {kanbans?.map((kanban) => (
           <KanbanColumn key={kanban.id} kanban={kanban} />
         ))}
+        <CreateKanban />
       </ColumnsContainer>
     </ScreenContainer>
   );
