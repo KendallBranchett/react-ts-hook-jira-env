@@ -8,6 +8,8 @@ import bugIcon from "assets/bug.svg";
 import styled from "@emotion/styled";
 import { Card } from "antd";
 import { CreateTask } from "./create-task";
+import { Mark } from "components/mark";
+import { Task } from "types/task";
 
 const TaskTypeIcon = ({ id }: { id: number }) => {
   const { data: taskTypes } = useTaskTypes();
@@ -16,6 +18,23 @@ const TaskTypeIcon = ({ id }: { id: number }) => {
     return null;
   }
   return <img alt={"task-icon"} src={name === "task" ? taskIcon : bugIcon} />;
+};
+
+const TaskCard = ({ task }: { task: Task }) => {
+  const { startEdit } = useTasksModal();
+  const { name: keyword } = useTasksSearchParams();
+  return (
+    <Card
+      onClick={() => startEdit(task.id)}
+      style={{ marginBottom: "0.5rem", cursor: "pointer" }}
+      key={task.id}
+    >
+      <p>
+        <Mark keyword={keyword} name={task.name} />
+      </p>
+      <TaskTypeIcon id={task.typeId} />
+    </Card>
+  );
 };
 
 export const KanbanColumn = ({ kanban }: { kanban: Kanban }) => {
@@ -28,12 +47,9 @@ export const KanbanColumn = ({ kanban }: { kanban: Kanban }) => {
       <h3>{kanban.name}</h3>
       <TasksContainer>
         {tasks?.map((task) => (
-          <Card style={{ marginBottom: "0.5rem", cursor: "pointer" }} key={task.id}  onClick={() => startEdit(task.id)}>
-            <div>{task.name}</div>
-            <TaskTypeIcon id={task.typeId} />
-          </Card>
+          <TaskCard task={task}></TaskCard>
         ))}
-        <CreateTask kanbanId={kanban.id}/>
+        <CreateTask kanbanId={kanban.id} />
       </TasksContainer>
     </Container>
   );
