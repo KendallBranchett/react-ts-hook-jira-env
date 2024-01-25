@@ -5,6 +5,7 @@ import { useKanbansSearchParams, useProjectInUrl } from "./util";
 import { KanbanColumn } from "./kanban-column";
 import styled from "@emotion/styled";
 import { SearchPanel } from "./search-panel";
+import { ScreenContainer } from "components/lib";
 
 export const KanbanScreen = () => {
   useDocumentTitle("看板列表");
@@ -15,7 +16,7 @@ export const KanbanScreen = () => {
   console.log("kanbans", kanbans);
 
   return (
-    <div>
+    <ScreenContainer>
       <h1>{currentProject?.name}看板</h1>
       <SearchPanel />
       <ColumnsContainer>
@@ -23,12 +24,12 @@ export const KanbanScreen = () => {
           <KanbanColumn key={kanban.id} kanban={kanban} />
         ))}
       </ColumnsContainer>
-    </div>
+    </ScreenContainer>
   );
 };
 
 const ColumnsContainer = styled.div`
   display: flex;
-  overflow: hidden;
-  margin-right: 2rem;
+  overflow-x: scroll;
+  flex: 1;
 `;
